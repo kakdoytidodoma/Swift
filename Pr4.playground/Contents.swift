@@ -44,7 +44,42 @@ for (animal, weight) in animals{
 
 //5. В кошельке (словарь) лежат банковские карты. Каждая из них имеет название (ключ), пин-код и сумму остатка. Владелец берёт одну из карт и производит оплату перечня товаров определённой стоимостью. Перечень товаров хранится в словаре типа [String:Int], где ключ - название товара, а значение - его стоимость. Оплата пройдёт успешно, если владелец карты вводит верный пин-код от выбранной им карты, а также если сумма остатка на карте не менее, чем сумма покупки. Выведите на консоль сообщение об успешной покупке или о невозможности произвести транзакцию.
 
+// Словарь для хранения банковских карт
+var wallet: [String: (pinCode: String, balance: Double)] = [
+    "Visa": ("1234", 1000.0),
+    "MasterCard": ("5678", 500.0),
+    "AmericanExpress": ("9012", 2000.0)
+]
+
+// Словарь для хранения перечня товаров и их стоимости
+let inventory: [String: Double] = [
+    "Laptop": 800.0,
+    "Smartphone": 500.0,
+    "TV": 1200.0,
+    "Headphones": 150.0
+]
 
 
+func makePayment(with cardName: String, for itemName: String) {
+
+    if let cardInfo = wallet[cardName] {
+
+        if let itemPrice = inventory[itemName] {
+
+            if cardInfo.balance >= itemPrice {
+                let newBalance = cardInfo.balance - itemPrice
+                wallet[cardName] = (cardInfo.pinCode, newBalance)
+                print("Purchase of \(itemName) for \(itemPrice) successful. New balance: \(newBalance)")
+            } else {
+                print("Insufficient funds")
+            }
+        } else {
+            print("Item \(itemName) not found in inventory")
+        }
+    } else {
+        print("Invalid card name")
+    }
+}
 
 
+makePayment(with: "Visa", for: "Laptop")
